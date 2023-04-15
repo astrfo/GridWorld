@@ -4,5 +4,6 @@ from simulator import Simulator
 if __name__ == '__main__':
     sim = 100
     epi = 1000
-    s = Simulator(sim, epi)
+    env = Environment()
+    s = Simulator(sim, epi, env)
     s.run()
