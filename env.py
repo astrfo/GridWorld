@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 
 class Environment:
     def __init__(self):
@@ -12,10 +13,10 @@ class Environment:
         self.width = self.map.shape[1]
         self.height = self.map.shape[0]
         self.start_state = np.array([0, 0])
-        self.current_state = self.start_state
+        self.current_state = deepcopy(self.start_state)
 
     def reset(self):
-        self.current_state = self.start_state
+        self.current_state = deepcopy(self.start_state)
         return self.current_state
 
     def step(self, action):
