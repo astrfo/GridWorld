@@ -9,6 +9,7 @@ class Collector:
         self.is_save_img = is_save_img
         self.reward_sim = np.zeros(self.epi)
         self.step_sim = np.zeros(self.epi)
+        self.is_save_img = is_save_img
 
     def reset(self):
         self.reward_epi = []
@@ -25,7 +26,7 @@ class Collector:
     def save_simulation_data(self):
         self.reward_sim /= self.sim
         self.step_sim /= self.sim
-        if is_save_img: self.save_img()
+        if self.is_save_img: self.save_img()
 
     def save_img(self):
         figure = plt.figure(figsize=(12, 8))
