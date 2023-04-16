@@ -10,11 +10,13 @@ class DynaQ:
         self.width = 6
         self.height = 4
         self.Q = np.zeros((len(self.action_space), self.height, self.width))
-        self.model = np.zeros((len(self.action_space), self.height, self.width))
+        self.model = np.zeros((len(self.action_space), self.height, self.width, 3))
+        self.visited = np.zeros((len(self.action_space), self.height, self.width), dtype=bool)
 
     def reset(self):
         self.Q = np.zeros((len(self.action_space), self.height, self.width))
-        self.model = np.zeros((len(self.action_space), self.height, self.width))
+        self.model = np.zeros((len(self.action_space), self.height, self.width, 3))
+        self.visited = np.zeros((len(self.action_space), self.height, self.width), dtype=bool)
 
     def action(self, state):
         if np.random.rand() < self.epsilon:
@@ -28,12 +30,16 @@ class DynaQ:
         max_Q = max(self.Q[:, next_state[0], next_state[1]])
         td_error = reward + self.gamma * max_Q  - self.Q[action, state[0], state[1]]
         self.Q[action, state[0], state[1]] += self.alpha * td_error
-        self.model[action, state[0], state[1]] = [reward, next_state]
-        for i in range(self.n_planning):
-            s_width = np.random.randint(6)
-            s_height = np.random.randint(4)
-            a = np.random.choice(range(self.action_space))
-            r, ns = self.model[a, s_height, s_width]
-            max_Q = max(self.Q[:, ns[0], ns[1]])
-            td_error = reward + self.gamma * max_Q  - self.Q[a, s_height, s_width]
-            self.Q[a, s_height, s_width] += self.alpha * td_error
+
+        self.visited[action, state[0], state[1]] = True
+        self.model[action, state[0], state[1]] = np.array([reward, next_state[0], next_state[1]])
+
+        if not done:
+            for i in range(self.n_planning):
+                visited_actions, visited_y, visited_x = np.where(self.visited)
+                idx = np.random.randint(len(visited_actions))
+                s_action, s_y, s_x = visited_actions[idx], visited_y[idx], visited_x[idx]
+                s_reward, s_next_y, s_next_x = self.model[s_action, s_y, s_x]
+                max_Q = max(self.Q[:, int(s_next_y), int(s_next_x)])
+                td_error = s_reward + self.gamma * max_Q - self.Q[s_action, s_y, s_x]
+                self.Q[s_action, s_y, s_x] += self.alpha * td_error
