@@ -3,13 +3,14 @@ from copy import deepcopy
 from collector import Collector
 from policy.qlearning import QLearning
 from policy.sarsa import Sarsa
+from policy.dynaq import DynaQ
 
 class Simulator:
     def __init__(self, sim, epi, env):
         self.sim = sim
         self.epi = epi
         self.env = env
-        self.policy = Sarsa()
+        self.policy = DynaQ()
         self.collector = Collector(sim, epi)
 
     def run(self):
