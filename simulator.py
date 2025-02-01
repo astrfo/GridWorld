@@ -10,7 +10,7 @@ class Simulator:
         self.sim = sim
         self.epi = epi
         self.env = env
-        self.policy = DynaQ()
+        self.policy = QLearning()
         self.collector = Collector(sim, epi)
 
     def run(self):

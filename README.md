@@ -8,6 +8,6 @@
 
 ## 使い方
 
-```
+```zsh
 python main.py
 ```

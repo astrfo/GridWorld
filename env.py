@@ -3,12 +3,12 @@ from copy import deepcopy
 
 class Environment:
     def __init__(self):
-        self.map = np.array(
-            [[0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 1]]
-        )
+        self.map = np.array([
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1]
+        ])
         self.actions = np.array([[-1, 0], [1, 0], [0, -1], [0, 1]])
         self.width = self.map.shape[1]
         self.height = self.map.shape[0]
